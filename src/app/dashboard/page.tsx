@@ -61,6 +61,14 @@ export default function Dashboard() {
     await updateNote(noteId, updates)
   }
 
+  const handleDeleteNote = async (noteId: string) => {
+    const success = await deleteNote(noteId)
+    if (success) {
+      setIsDetailModalOpen(false)
+      setSelectedNote(null)
+    }
+  }
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -218,6 +226,7 @@ export default function Dashboard() {
         }}
         note={selectedNote}
         onUpdate={handleUpdateNote}
+        onDelete={handleDeleteNote}
       />
       
       {/* Modals */}

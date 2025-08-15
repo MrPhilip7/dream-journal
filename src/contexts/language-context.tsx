@@ -67,6 +67,10 @@ const translations = {
     created: 'Created',
      updated: 'Updated',
      unknown: 'Unknown',
+     deleteDream: 'Delete Dream',
+     confirmDelete: 'Confirm Delete',
+     deleteConfirmation: 'Are you sure you want to delete this dream? This action cannot be undone.',
+     deleting: 'Deleting...',
      
      // Settings page
     settingsDescription: 'Manage your account preferences and privacy settings',
@@ -144,6 +148,10 @@ const translations = {
     created: 'Utworzono',
      updated: 'Zaktualizowano',
      unknown: 'Nieznane',
+     deleteDream: 'Usuń Sen',
+     confirmDelete: 'Potwierdź Usunięcie',
+     deleteConfirmation: 'Czy na pewno chcesz usunąć ten sen? Ta akcja nie może być cofnięta.',
+     deleting: 'Usuwanie...',
      
      // Settings page
     settingsDescription: 'Zarządzaj preferencjami konta i ustawieniami prywatności',

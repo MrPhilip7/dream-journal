@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { X, Edit3, Save, Calendar, Tag, Image as ImageIcon, Sparkles, MessageCircle } from 'lucide-react'
+import { X, Edit3, Save, Calendar, Tag, Image as ImageIcon, Sparkles, MessageCircle, Trash2 } from 'lucide-react'
 import { Note } from '@/hooks/use-notes'
 import { format } from 'date-fns'
 import { AiChatModal } from './ai-chat-modal'
@@ -13,9 +13,10 @@ interface NoteDetailModalProps {
   onClose: () => void
   note: Note | null
   onUpdate?: (noteId: string, updates: Partial<Note>) => Promise<void>
+  onDelete?: (noteId: string) => Promise<void>
 }
 
-export function NoteDetailModal({ isOpen, onClose, note, onUpdate }: NoteDetailModalProps) {
+export function NoteDetailModal({ isOpen, onClose, note, onUpdate, onDelete }: NoteDetailModalProps) {
   const { theme } = useTheme()
   const { t } = useLanguage()
   const [isEditing, setIsEditing] = useState(false)
@@ -23,6 +24,8 @@ export function NoteDetailModal({ isOpen, onClose, note, onUpdate }: NoteDetailM
   const [newTag, setNewTag] = useState('')
   const [isSaving, setIsSaving] = useState(false)
   const [isAiChatOpen, setIsAiChatOpen] = useState(false)
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
 
   useEffect(() => {
     if (note) {
@@ -76,6 +79,21 @@ export function NoteDetailModal({ isOpen, onClose, note, onUpdate }: NoteDetailM
     }
   }
 
+  const handleDelete = async () => {
+    if (!note || !onDelete) return
+    
+    setIsDeleting(true)
+    try {
+      await onDelete(note.id)
+      onClose()
+    } catch (error) {
+      console.error('Failed to delete note:', error)
+    } finally {
+      setIsDeleting(false)
+      setShowDeleteConfirm(false)
+    }
+  }
+
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
       <div className="bg-card rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden">
@@ -113,6 +131,14 @@ export function NoteDetailModal({ isOpen, onClose, note, onUpdate }: NoteDetailM
                 >
                   <Edit3 className="w-4 h-4" />
                   <span className="text-sm font-medium">{t('edit')}</span>
+                </button>
+                <button
+                  onClick={() => setShowDeleteConfirm(true)}
+                  className="flex items-center space-x-2 px-4 py-2 bg-red-500 dark:bg-red-600 text-white rounded-lg hover:bg-red-600 dark:hover:bg-red-500 transition-colors shadow-md hover:shadow-lg"
+                  title={t('deleteDream')}
+                >
+                  <Trash2 className="w-4 h-4" />
+                  <span className="text-sm font-medium">{t('deleteDream')}</span>
                 </button>
               </>
             ) : (
@@ -287,6 +313,42 @@ export function NoteDetailModal({ isOpen, onClose, note, onUpdate }: NoteDetailM
           </div>
         </div>
       </div>
+      
+      {/* Delete Confirmation Modal */}
+      {showDeleteConfirm && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-60 flex items-center justify-center p-4">
+          <div className="bg-card rounded-2xl shadow-2xl w-full max-w-md p-6">
+            <div className="flex items-center space-x-3 mb-4">
+              <div className="w-10 h-10 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center">
+                <Trash2 className="w-5 h-5 text-red-600 dark:text-red-400" />
+              </div>
+              <h3 className="text-lg font-semibold text-gray-800 dark:text-white">{t('confirmDelete')}</h3>
+            </div>
+            
+            <p className="text-gray-600 dark:text-gray-300 mb-6">
+              {t('deleteConfirmation')}
+            </p>
+            
+            <div className="flex items-center justify-end space-x-3">
+              <button
+                onClick={() => setShowDeleteConfirm(false)}
+                disabled={isDeleting}
+                className="px-4 py-2 text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-slate-600 rounded-lg hover:bg-gray-200 dark:hover:bg-slate-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {t('cancel')}
+              </button>
+              <button
+                onClick={handleDelete}
+                disabled={isDeleting}
+                className="flex items-center space-x-2 px-4 py-2 bg-red-500 dark:bg-red-600 text-white rounded-lg hover:bg-red-600 dark:hover:bg-red-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <Trash2 className="w-4 h-4" />
+                <span>{isDeleting ? t('deleting') : t('confirmDelete')}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       
       {/* AI Chat Modal */}
       <AiChatModal
