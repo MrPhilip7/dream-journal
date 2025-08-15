@@ -84,7 +84,7 @@ export default function SessionSecurity({ className = '' }: SessionSecurityProps
       {/* Session Info Toggle */}
       <button
         onClick={() => setShowSessionInfo(!showSessionInfo)}
-        className="fixed bottom-4 right-4 p-3 bg-gray-800 text-white rounded-full shadow-lg hover:bg-gray-700 transition-colors z-40"
+        className="fixed bottom-4 left-4 p-3 bg-gray-800 text-white rounded-full shadow-lg hover:bg-gray-700 transition-colors z-40"
         title="Session Information"
       >
         <Shield className="w-5 h-5" />
@@ -92,7 +92,7 @@ export default function SessionSecurity({ className = '' }: SessionSecurityProps
 
       {/* Session Info Panel */}
       {showSessionInfo && (
-        <div className="fixed bottom-20 right-4 bg-white rounded-xl shadow-xl border border-gray-200 p-4 w-80 z-40">
+        <div className="fixed bottom-20 left-4 bg-white rounded-xl shadow-xl border border-gray-200 p-4 w-80 z-40">
           <div className="flex items-center justify-between mb-3">
             <h4 className="font-semibold text-gray-900 flex items-center space-x-2">
               <Shield className="w-4 h-4" />

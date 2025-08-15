@@ -196,8 +196,6 @@ export function useSessionSecurity(config: SessionSecurityConfig = {}) {
     timeUntilLogout,
     extendSession,
     forceLogout,
-    sessionDuration: sessionStartRef.current 
-      ? Math.floor((Date.now() - sessionStartRef.current.getTime()) / 1000)
-      : 0
+    sessionDuration: 0 // Avoid hydration mismatch by not calculating real-time duration
   }
 }

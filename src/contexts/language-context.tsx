@@ -26,7 +26,49 @@ const translations = {
     createNewDream: 'Create New Dream',
     settings: 'Settings',
     
-    // Settings page
+    // Note Creation Modal
+    recordYourDream: 'Record Your Dream',
+    title: 'Title',
+    titlePlaceholder: 'Give your dream a title...',
+    autoSuggestFromContent: 'Auto-suggest from content',
+    description: 'Description',
+    descriptionPlaceholder: 'Describe your dream in detail... What did you see, feel, or experience?',
+    date: 'Date',
+    tags: 'Tags',
+    tagsPlaceholder: 'Add tags (flying, water, family, etc.)',
+    add: 'Add',
+    images: 'Images (Max 3)',
+    uploadImages: 'Click to upload images or drag and drop',
+    uploadImageFormat: 'PNG, JPG up to 10MB each',
+    imagesSelected: 'image(s) selected',
+    cancel: 'Cancel',
+    saveDream: 'Save Dream',
+    fillTitleAndDescription: 'Please fill in both title and description',
+    charactersCount: 'characters',
+    
+    // AI Chat Modal
+    aiDreamAssistant: 'AI Dream Assistant',
+    enhancing: 'Enhancing',
+    dreamJournalAiChat: 'Dream Journal AI Chat',
+    quickEnhancements: 'Quick enhancements',
+    aiThinking: 'AI is thinking',
+    askAboutDream: 'Ask me anything about your dream...',
+    
+    // Note Detail Modal
+    dreamDetails: 'Dream Details',
+    editDream: 'Edit Dream',
+    noDate: 'No date',
+    aiEnhance: 'AI Enhance',
+    edit: 'Edit',
+    saving: 'Saving...',
+    saveChanges: 'Save Changes',
+    imagesAttached: 'image(s) attached',
+    aiEnhanced: 'This dream has been enhanced by AI',
+    created: 'Created',
+     updated: 'Updated',
+     unknown: 'Unknown',
+     
+     // Settings page
     settingsDescription: 'Manage your account preferences and privacy settings',
     languageSettings: 'Language Settings',
     languageDescription: 'Choose your preferred language for the application',
@@ -61,7 +103,49 @@ const translations = {
     createNewDream: 'Utwórz Nowy Sen',
     settings: 'Ustawienia',
     
-    // Settings page
+    // Note Creation Modal
+    recordYourDream: 'Zapisz Swój Sen',
+    title: 'Tytuł',
+    titlePlaceholder: 'Nadaj tytuł swojemu śnie...',
+    autoSuggestFromContent: 'Automatyczna sugestia z treści',
+    description: 'Opis',
+    descriptionPlaceholder: 'Opisz swój sen szczegółowo... Co widziałeś, czułeś lub doświadczyłeś?',
+    date: 'Data',
+    tags: 'Tagi',
+    tagsPlaceholder: 'Dodaj tagi (latanie, woda, rodzina, itp.)',
+    add: 'Dodaj',
+    images: 'Obrazy (Maks. 3)',
+    uploadImages: 'Kliknij, aby przesłać obrazy lub przeciągnij i upuść',
+    uploadImageFormat: 'PNG, JPG do 10MB każdy',
+    imagesSelected: 'obraz(y) wybrane',
+    cancel: 'Anuluj',
+    saveDream: 'Zapisz Sen',
+    fillTitleAndDescription: 'Proszę wypełnić zarówno tytuł, jak i opis',
+    charactersCount: 'znaków',
+    
+    // AI Chat Modal
+    aiDreamAssistant: 'Asystent Snów AI',
+    enhancing: 'Ulepszanie',
+    dreamJournalAiChat: 'Czat AI Dziennika Snów',
+    quickEnhancements: 'Szybkie ulepszenia',
+    aiThinking: 'AI myśli',
+    askAboutDream: 'Zapytaj mnie o cokolwiek dotyczące twojego snu...',
+    
+    // Note Detail Modal
+    dreamDetails: 'Szczegóły Snu',
+    editDream: 'Edytuj Sen',
+    noDate: 'Brak daty',
+    aiEnhance: 'Ulepszenie AI',
+    edit: 'Edytuj',
+    saving: 'Zapisywanie...',
+    saveChanges: 'Zapisz Zmiany',
+    imagesAttached: 'obraz(y) załączone',
+    aiEnhanced: 'Ten sen został ulepszony przez AI',
+    created: 'Utworzono',
+     updated: 'Zaktualizowano',
+     unknown: 'Nieznane',
+     
+     // Settings page
     settingsDescription: 'Zarządzaj preferencjami konta i ustawieniami prywatności',
     languageSettings: 'Ustawienia Języka',
     languageDescription: 'Wybierz preferowany język dla aplikacji',

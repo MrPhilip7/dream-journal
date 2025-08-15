@@ -5,6 +5,8 @@ import { X, Edit3, Save, Calendar, Tag, Image as ImageIcon, Sparkles, MessageCir
 import { Note } from '@/hooks/use-notes'
 import { format } from 'date-fns'
 import { AiChatModal } from './ai-chat-modal'
+import { useTheme } from '@/contexts/theme-context'
+import { useLanguage } from '@/contexts/language-context'
 
 interface NoteDetailModalProps {
   isOpen: boolean
@@ -14,6 +16,8 @@ interface NoteDetailModalProps {
 }
 
 export function NoteDetailModal({ isOpen, onClose, note, onUpdate }: NoteDetailModalProps) {
+  const { theme } = useTheme()
+  const { t } = useLanguage()
   const [isEditing, setIsEditing] = useState(false)
   const [editedNote, setEditedNote] = useState<Partial<Note>>({})
   const [newTag, setNewTag] = useState('')
@@ -83,10 +87,10 @@ export function NoteDetailModal({ isOpen, onClose, note, onUpdate }: NoteDetailM
             </div>
             <div>
               <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
-                {isEditing ? 'Edit Dream' : 'Dream Details'}
+                {isEditing ? t('editDream') : t('dreamDetails')}
               </h2>
               <p className="text-sm text-gray-500 dark:text-gray-400">
-                {note.date ? format(new Date(note.date), 'EEEE, MMMM d, yyyy') : 'No date'}
+                {note.date ? format(new Date(note.date), 'EEEE, MMMM d, yyyy') : t('noDate')}
               </p>
             </div>
           </div>
@@ -100,15 +104,15 @@ export function NoteDetailModal({ isOpen, onClose, note, onUpdate }: NoteDetailM
                   title="Enhance with AI"
                 >
                   <Sparkles className="w-4 h-4" />
-                  <span className="text-sm font-medium">AI Enhance</span>
+                  <span className="text-sm font-medium">{t('aiEnhance')}</span>
                 </button>
                 <button
                   onClick={() => setIsEditing(true)}
                   className="flex items-center space-x-2 px-4 py-2 bg-blue-500 dark:bg-blue-600 text-white rounded-lg hover:bg-blue-600 dark:hover:bg-blue-500 transition-colors shadow-md hover:shadow-lg"
-                  title="Edit Dream"
+                  title={t('editDream')}
                 >
                   <Edit3 className="w-4 h-4" />
-                  <span className="text-sm font-medium">Edit</span>
+                  <span className="text-sm font-medium">{t('edit')}</span>
                 </button>
               </>
             ) : (
@@ -125,7 +129,7 @@ export function NoteDetailModal({ isOpen, onClose, note, onUpdate }: NoteDetailM
                   }}
                   className="px-4 py-2 text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-slate-600 rounded-lg hover:bg-gray-200 dark:hover:bg-slate-500 transition-colors shadow-md hover:shadow-lg"
                 >
-                  Cancel
+                  {t('cancel')}
                 </button>
                 <button
                   onClick={handleSave}
@@ -133,7 +137,7 @@ export function NoteDetailModal({ isOpen, onClose, note, onUpdate }: NoteDetailM
                   className="flex items-center space-x-2 px-4 py-2 bg-green-500 dark:bg-green-600 text-white rounded-lg hover:bg-green-600 dark:hover:bg-green-500 transition-colors shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <Save className="w-4 h-4" />
-                  <span className="text-sm font-medium">{isSaving ? 'Saving...' : 'Save Changes'}</span>
+                  <span className="text-sm font-medium">{isSaving ? t('saving') : t('saveChanges')}</span>
                 </button>
               </div>
             )}
@@ -153,7 +157,7 @@ export function NoteDetailModal({ isOpen, onClose, note, onUpdate }: NoteDetailM
             {/* Title */}
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Title
+                {t('title')}
               </label>
               {isEditing ? (
                 <input
@@ -161,7 +165,7 @@ export function NoteDetailModal({ isOpen, onClose, note, onUpdate }: NoteDetailM
                   value={editedNote.title || ''}
                   onChange={(e) => setEditedNote(prev => ({ ...prev, title: e.target.value }))}
                   className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 dark:bg-slate-700 dark:text-white rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-lg"
-                  placeholder="Enter dream title..."
+                  placeholder={t('titlePlaceholder')}
                 />
               ) : (
                 <h3 className="text-2xl font-semibold text-gray-800 dark:text-white">{note.title}</h3>
@@ -171,7 +175,7 @@ export function NoteDetailModal({ isOpen, onClose, note, onUpdate }: NoteDetailM
             {/* Content */}
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Dream Description
+                {t('description')}
               </label>
               {isEditing ? (
                 <textarea
@@ -179,7 +183,7 @@ export function NoteDetailModal({ isOpen, onClose, note, onUpdate }: NoteDetailM
                   onChange={(e) => setEditedNote(prev => ({ ...prev, content: e.target.value }))}
                   rows={12}
                   className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 dark:bg-slate-700 dark:text-white rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
-                  placeholder="Describe your dream in detail..."
+                  placeholder={t('descriptionPlaceholder')}
                 />
               ) : (
                 <div className="prose max-w-none">
@@ -192,7 +196,7 @@ export function NoteDetailModal({ isOpen, onClose, note, onUpdate }: NoteDetailM
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 <Calendar className="w-4 h-4 inline mr-1" />
-                Date
+                {t('date')}
               </label>
               {isEditing ? (
                 <input
@@ -202,7 +206,7 @@ export function NoteDetailModal({ isOpen, onClose, note, onUpdate }: NoteDetailM
                   className="px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-slate-700 dark:text-white rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 />
               ) : (
-                <p className="text-gray-600 dark:text-gray-400">{note.date ? format(new Date(note.date), 'EEEE, MMMM d, yyyy') : 'No date'}</p>
+                <p className="text-gray-600 dark:text-gray-400">{note.date ? format(new Date(note.date), 'EEEE, MMMM d, yyyy') : t('noDate')}</p>
               )}
             </div>
 
@@ -210,7 +214,7 @@ export function NoteDetailModal({ isOpen, onClose, note, onUpdate }: NoteDetailM
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 <Tag className="w-4 h-4 inline mr-1" />
-                Tags
+                {t('tags')}
               </label>
               
               <div className="flex flex-wrap gap-2 mb-3">
@@ -239,14 +243,14 @@ export function NoteDetailModal({ isOpen, onClose, note, onUpdate }: NoteDetailM
                     value={newTag}
                     onChange={(e) => setNewTag(e.target.value)}
                     onKeyPress={handleKeyPress}
-                    placeholder="Add a tag..."
+                    placeholder={t('tagsPlaceholder')}
                     className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-slate-700 dark:text-white rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm"
                   />
                   <button
                     onClick={handleAddTag}
                     className="px-4 py-2 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-lg hover:bg-purple-200 dark:hover:bg-purple-900/50 transition-colors text-sm"
                   >
-                    Add
+                    {t('addTag')}
                   </button>
                 </div>
               )}
@@ -257,10 +261,10 @@ export function NoteDetailModal({ isOpen, onClose, note, onUpdate }: NoteDetailM
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   <ImageIcon className="w-4 h-4 inline mr-1" />
-                  Images
+                  {t('images')}
                 </label>
                 <div className="text-gray-500 dark:text-gray-400 text-sm">
-                  {note.images.length} image(s) attached
+                  {note.images.length} {t('imagesAttached')}
                 </div>
               </div>
             )}
@@ -269,15 +273,15 @@ export function NoteDetailModal({ isOpen, onClose, note, onUpdate }: NoteDetailM
             {note.aiEdited && (
               <div className="flex items-center space-x-2 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
                 <Sparkles className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-                <span className="text-sm text-blue-700 dark:text-blue-300">This dream has been enhanced by AI</span>
+                <span className="text-sm text-blue-700 dark:text-blue-300">{t('aiEnhanced')}</span>
               </div>
             )}
 
             {/* Metadata */}
             <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
               <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400">
-                <span>Created: {note.createdAt ? format(new Date(note.createdAt), 'MMM d, yyyy \\at h:mm a') : 'Unknown'}</span>
-                <span>Updated: {note.updatedAt ? format(new Date(note.updatedAt), 'MMM d, yyyy \\at h:mm a') : 'Unknown'}</span>
+                <span>{t('created')}: {note.createdAt ? format(new Date(note.createdAt), 'MMM d, yyyy h:mm a') : t('unknown')}</span>
+                <span>{t('updated')}: {note.updatedAt ? format(new Date(note.updatedAt), 'MMM d, yyyy h:mm a') : t('unknown')}</span>
               </div>
             </div>
           </div>

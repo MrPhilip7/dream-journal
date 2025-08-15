@@ -2,6 +2,8 @@
 
 import { useState } from 'react'
 import { X, Upload, Tag, Calendar } from 'lucide-react'
+import { useLanguage } from '@/contexts/language-context'
+import { useTheme } from '@/contexts/theme-context'
 
 interface NoteCreationModalProps {
   isOpen: boolean
@@ -16,6 +18,8 @@ interface NoteCreationModalProps {
 }
 
 export default function NoteCreationModal({ isOpen, onClose, onSave }: NoteCreationModalProps) {
+  const { t } = useLanguage()
+  const { theme } = useTheme()
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const [date, setDate] = useState(new Date().toISOString().split('T')[0])
@@ -45,7 +49,7 @@ export default function NoteCreationModal({ isOpen, onClose, onSave }: NoteCreat
 
   const handleSave = () => {
     if (!title.trim() || !content.trim()) {
-      alert('Please fill in both title and description')
+      alert(t('fillTitleAndDescription'))
       return
     }
 
@@ -80,7 +84,7 @@ export default function NoteCreationModal({ isOpen, onClose, onSave }: NoteCreat
       <div className="bg-card rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b dark:border-gray-700">
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Record Your Dream</h2>
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">{t('recordYourDream')}</h2>
           <button
             onClick={onClose}
             className="text-gray-400 hover:text-gray-600 dark:text-gray-300 dark:hover:text-gray-100 transition-colors"
@@ -95,14 +99,14 @@ export default function NoteCreationModal({ isOpen, onClose, onSave }: NoteCreat
           <div>
             <div className="flex items-center justify-between mb-2">
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                Title
+                {t('title')}
               </label>
               {content && !title && (
                 <button
                   onClick={generateTitleSuggestion}
                   className="text-xs text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 transition-colors"
                 >
-                  Auto-suggest from content
+                  {t('autoSuggestFromContent')}
                 </button>
               )}
             </div>
@@ -110,22 +114,22 @@ export default function NoteCreationModal({ isOpen, onClose, onSave }: NoteCreat
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="Give your dream a title..."
+              placeholder={t('titlePlaceholder')}
               className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-slate-700 dark:text-white rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
               maxLength={120}
             />
-            <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">{title.length}/120 characters</div>
+            <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">{title.length}/120 {t('charactersCount')}</div>
           </div>
 
           {/* Description */}
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Description
+              {t('description')}
             </label>
             <textarea
               value={content}
               onChange={(e) => setContent(e.target.value)}
-              placeholder="Describe your dream in detail... What did you see, feel, or experience?"
+              placeholder={t('descriptionPlaceholder')}
               rows={6}
               className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-slate-700 dark:text-white rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
             />
@@ -138,7 +142,7 @@ export default function NoteCreationModal({ isOpen, onClose, onSave }: NoteCreat
                   <em>I</em>
                 </button>
               </div>
-              <div className="text-xs text-gray-500 dark:text-gray-400">{content.length} characters</div>
+              <div className="text-xs text-gray-500 dark:text-gray-400">{content.length} {t('charactersCount')}</div>
             </div>
           </div>
 
@@ -146,7 +150,7 @@ export default function NoteCreationModal({ isOpen, onClose, onSave }: NoteCreat
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               <Calendar className="w-4 h-4 inline mr-1" />
-              Date
+              {t('date')}
             </label>
             <input
               type="date"
@@ -160,7 +164,7 @@ export default function NoteCreationModal({ isOpen, onClose, onSave }: NoteCreat
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               <Tag className="w-4 h-4 inline mr-1" />
-              Tags
+              {t('tags')}
             </label>
             <div className="flex flex-wrap gap-2 mb-2">
               {tags.map((tag, index) => (
@@ -184,14 +188,14 @@ export default function NoteCreationModal({ isOpen, onClose, onSave }: NoteCreat
                 value={tagInput}
                 onChange={(e) => setTagInput(e.target.value)}
                 onKeyPress={handleKeyPress}
-                placeholder="Add tags (flying, water, family, etc.)"
+                placeholder={t('tagsPlaceholder')}
                 className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-slate-700 dark:text-white rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
               />
               <button
                 onClick={handleAddTag}
                 className="px-4 py-2 bg-purple-600 dark:bg-purple-700 text-white rounded-lg hover:bg-purple-700 dark:hover:bg-purple-600 transition-colors"
               >
-                Add
+                {t('add')}
               </button>
             </div>
           </div>
@@ -200,16 +204,16 @@ export default function NoteCreationModal({ isOpen, onClose, onSave }: NoteCreat
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               <Upload className="w-4 h-4 inline mr-1" />
-              Images (Max 3)
+              {t('images')}
             </label>
             <div className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6 text-center hover:border-purple-400 dark:hover:border-purple-500 transition-colors cursor-pointer">
               <Upload className="w-8 h-8 text-gray-400 dark:text-gray-500 mx-auto mb-2" />
-              <p className="text-sm text-gray-600 dark:text-gray-400">Click to upload images or drag and drop</p>
-              <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">PNG, JPG up to 10MB each</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400">{t('uploadImages')}</p>
+              <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">{t('uploadImageFormat')}</p>
             </div>
             {images.length > 0 && (
               <div className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-                  {images.length} image(s) selected
+                  {images.length} {t('imagesSelected')}
                 </div>
             )}
           </div>
@@ -221,13 +225,13 @@ export default function NoteCreationModal({ isOpen, onClose, onSave }: NoteCreat
             onClick={onClose}
             className="px-6 py-2 text-gray-700 dark:text-gray-300 bg-white dark:bg-slate-600 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-500 transition-colors"
           >
-            Cancel
+            {t('cancel')}
           </button>
           <button
             onClick={handleSave}
             className="px-6 py-2 bg-purple-600 dark:bg-purple-700 text-white rounded-lg hover:bg-purple-700 dark:hover:bg-purple-600 transition-colors font-medium"
           >
-            Save Dream
+            {t('saveDream')}
           </button>
         </div>
       </div>

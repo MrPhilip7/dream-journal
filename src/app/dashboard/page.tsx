@@ -67,9 +67,11 @@ export default function Dashboard() {
       <header className="bg-card/80 backdrop-blur-sm border-b border-border sticky top-0 z-10">
         <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
-              <span className="text-white text-sm font-bold">D</span>
-            </div>
+            <img 
+              src="/draims-logo.svg" 
+              alt="DRAIMS Logo" 
+              className="w-8 h-8"
+            />
             <h1 className="text-xl font-semibold text-gray-800 dark:text-gray-100">{t('dreamJournal')}</h1>
           </div>
           
