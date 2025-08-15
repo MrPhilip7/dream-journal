@@ -3,11 +3,15 @@
 import { useSession, signOut } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { Calendar, Plus, MessageCircle, LogOut, Sparkles } from 'lucide-react'
+import { Calendar, Plus, MessageCircle, LogOut, Sparkles, BarChart3, FileText } from 'lucide-react'
 import { useNotes } from '@/hooks/use-notes'
 import NoteCreationModal from '@/components/note-creation-modal'
 import { NoteDetailModal } from '@/components/note-detail-modal'
 import { AiChatModal } from '@/components/ai-chat-modal'
+import { AnalyticsDashboard } from '@/components/analytics-dashboard'
+import { ReportsModal } from '@/components/reports-modal'
+import SessionSecurity from '@/components/session-security'
+import { ThemeToggle } from '@/components/theme-toggle'
 
 export default function Dashboard() {
   const { data: session, status } = useSession()
@@ -17,6 +21,8 @@ export default function Dashboard() {
   const [selectedNote, setSelectedNote] = useState<any>(null)
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false)
   const [isAiChatOpen, setIsAiChatOpen] = useState(false)
+  const [isAnalyticsOpen, setIsAnalyticsOpen] = useState(false)
+  const [isReportsOpen, setIsReportsOpen] = useState(false)
   const { notes, loading, error, createNote, updateNote, deleteNote } = useNotes(selectedDate)
 
   useEffect(() => {
@@ -27,8 +33,8 @@ export default function Dashboard() {
 
   if (status === 'loading') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-cyan-50 flex items-center justify-center">
-        <div className="text-gray-600">Loading...</div>
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-foreground">Loading...</div>
       </div>
     )
   }
@@ -54,22 +60,29 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-cyan-50">
+    <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="bg-white/80 backdrop-blur-sm border-b border-gray-200 sticky top-0 z-10">
+      <header className="bg-card/80 backdrop-blur-sm border-b border-border sticky top-0 z-10">
         <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
               <span className="text-white text-sm font-bold">D</span>
             </div>
-            <h1 className="text-xl font-semibold text-gray-800">Dream Journal</h1>
+            <h1 className="text-xl font-semibold text-gray-800 dark:text-gray-100">Dream Journal</h1>
           </div>
           
           <div className="flex items-center space-x-4">
-            <span className="text-sm text-gray-600">Welcome, {session.user?.name || session.user?.email}</span>
+            <span className="text-sm text-gray-600 dark:text-gray-300">Welcome, {session.user?.name || session.user?.email}</span>
+            <ThemeToggle />
+            <button
+              onClick={() => window.location.href = '/privacy'}
+              className="text-purple-600 hover:text-purple-700 dark:text-purple-400 dark:hover:text-purple-300 font-medium"
+            >
+              Privacy
+            </button>
             <button
               onClick={() => signOut()}
-              className="flex items-center space-x-2 px-3 py-2 text-sm text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors"
+              className="flex items-center space-x-2 px-3 py-2 text-sm text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
             >
               <LogOut className="w-4 h-4" />
               <span>Sign Out</span>
@@ -83,50 +96,50 @@ export default function Dashboard() {
         {/* Date Picker */}
         <div className="mb-8">
           <div className="flex items-center space-x-3 mb-4">
-            <Calendar className="w-5 h-5 text-gray-600" />
-            <h2 className="text-lg font-medium text-gray-800">Select Date</h2>
+            <Calendar className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+            <h2 className="text-lg font-medium text-gray-800 dark:text-gray-200">Select Date</h2>
           </div>
           <input
             type="date"
             value={selectedDate.toISOString().split('T')[0]}
             onChange={(e) => setSelectedDate(new Date(e.target.value))}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+            className="px-4 py-2 border border-border bg-card text-card-foreground rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
           />
         </div>
 
         {/* Dream Entries */}
         <div className="mb-8">
-          <h2 className="text-lg font-medium text-gray-800 mb-4">Dream Entries</h2>
+          <h2 className="text-lg font-medium text-gray-800 dark:text-gray-200 mb-4">Dream Entries</h2>
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-4">
+            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 px-4 py-3 rounded-lg mb-4">
               {error}
             </div>
           )}
           <div className="space-y-4">
             {loading ? (
-              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                <p className="text-gray-500 text-center py-8">Loading dreams...</p>
+              <div className="bg-card rounded-xl shadow-sm border border-border p-6">
+                <p className="text-gray-500 dark:text-gray-400 text-center py-8">Loading dreams...</p>
               </div>
             ) : notes.length > 0 ? (
               notes.map((note) => (
                  <div 
                    key={note.id} 
                    onClick={() => handleNoteClick(note)}
-                   className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 cursor-pointer hover:shadow-md hover:border-purple-200 transition-all duration-200"
+                   className="bg-card rounded-xl shadow-sm border border-border p-6 cursor-pointer hover:shadow-md hover:border-purple-200 dark:hover:border-purple-600 transition-all duration-200"
                  >
                    <div className="flex items-start justify-between mb-3">
-                     <h3 className="text-lg font-medium text-gray-800">{note.title}</h3>
-                     <span className="text-sm text-gray-500">
+                     <h3 className="text-lg font-medium text-gray-800 dark:text-gray-200">{note.title}</h3>
+                     <span className="text-sm text-gray-500 dark:text-gray-400">
                        {note.createdAt.toLocaleDateString()}
                      </span>
                    </div>
-                   <p className="text-gray-600 mb-4 overflow-hidden text-ellipsis line-clamp-3">{note.content}</p>
+                   <p className="text-gray-600 dark:text-gray-300 mb-4 overflow-hidden text-ellipsis line-clamp-3">{note.content}</p>
                    {note.tags.length > 0 && (
                      <div className="flex flex-wrap gap-2">
                        {note.tags.map((tag, index) => (
                          <span
                            key={index}
-                           className="px-2 py-1 bg-purple-100 text-purple-700 text-xs rounded-full"
+                           className="px-2 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-xs rounded-full"
                          >
                            {tag}
                          </span>
@@ -136,28 +149,49 @@ export default function Dashboard() {
                  </div>
                ))
             ) : (
-              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                <p className="text-gray-500 text-center py-8">No dreams recorded for this date yet.</p>
+              <div className="bg-card rounded-xl shadow-sm border border-border p-6">
+                <p className="text-gray-500 dark:text-gray-400 text-center py-8">No dreams recorded for this date yet.</p>
               </div>
             )}
           </div>
         </div>
 
         {/* Floating Action Buttons */}
-        <div className="fixed bottom-6 right-6 flex flex-col space-y-3">
+        <div className="fixed bottom-6 right-6 flex flex-col space-y-3 z-40">
+          {/* Analytics Button */}
+          <button
+            onClick={() => setIsAnalyticsOpen(true)}
+            className="w-12 h-12 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center group"
+            title="Analytics"
+          >
+            <BarChart3 className="w-5 h-5 group-hover:scale-110 transition-transform" />
+          </button>
+          
+          {/* Reports Button */}
+          <button
+            onClick={() => setIsReportsOpen(true)}
+            className="w-12 h-12 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center group"
+            title="Reports"
+          >
+            <FileText className="w-5 h-5 group-hover:scale-110 transition-transform" />
+          </button>
+          
+          {/* AI Chat Button */}
           <button
             onClick={() => setIsAiChatOpen(true)}
-            className="bg-gradient-to-r from-blue-500 to-purple-500 text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105"
+            className="w-12 h-12 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center group"
             title="AI Dream Assistant"
           >
-            <Sparkles className="w-6 h-6" />
+            <Sparkles className="w-5 h-5 group-hover:scale-110 transition-transform" />
           </button>
+          
+          {/* Create Note Button - Main Action */}
           <button 
             onClick={() => setIsNoteModalOpen(true)}
-            className="bg-gradient-to-r from-purple-500 to-pink-500 text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105"
+            className="w-14 h-14 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 flex items-center justify-center group"
             title="Create New Dream"
           >
-            <Plus className="w-6 h-6" />
+            <Plus className="w-6 h-6 group-hover:scale-110 transition-transform" />
           </button>
         </div>
       </main>
@@ -181,12 +215,25 @@ export default function Dashboard() {
         onUpdate={handleUpdateNote}
       />
       
-      {/* AI Chat Modal */}
+      {/* Modals */}
       <AiChatModal
         isOpen={isAiChatOpen}
         onClose={() => setIsAiChatOpen(false)}
         onNoteUpdate={handleUpdateNote}
       />
+      
+      <AnalyticsDashboard
+        isOpen={isAnalyticsOpen}
+        onClose={() => setIsAnalyticsOpen(false)}
+      />
+      
+      <ReportsModal
+        isOpen={isReportsOpen}
+        onClose={() => setIsReportsOpen(false)}
+      />
+      
+      {/* Session Security */}
+      <SessionSecurity />
     </div>
   )
 }

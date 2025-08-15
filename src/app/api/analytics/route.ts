@@ -136,9 +136,16 @@ async function getMoodAnalytics(userId: string, startDate: Date) {
     `
   ])
 
+  // Convert BigInt values to numbers for JSON serialization
+  const serializedMoodByDay = (moodByDay as any[]).map(item => ({
+    ...item,
+    dayOfWeek: Number(item.dayOfWeek),
+    count: Number(item.count)
+  }))
+
   return NextResponse.json({
     moodTrends,
-    moodByDay
+    moodByDay: serializedMoodByDay
   })
 }
 
@@ -215,7 +222,14 @@ async function getTrendAnalytics(userId: string, startDate: Date) {
     ORDER BY date ASC
   `
 
-  return NextResponse.json({ dreamsByDate })
+  // Convert BigInt values to numbers for JSON serialization
+  const serializedData = (dreamsByDate as any[]).map(item => ({
+    ...item,
+    count: Number(item.count),
+    avgMoodScore: item.avgMoodScore ? Number(item.avgMoodScore) : null
+  }))
+
+  return NextResponse.json({ dreamsByDate: serializedData })
 }
 
 async function getWeeklyReport(userId: string) {

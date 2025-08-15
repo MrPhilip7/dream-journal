@@ -74,18 +74,18 @@ export function NoteDetailModal({ isOpen, onClose, note, onUpdate }: NoteDetailM
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden">
+      <div className="bg-card rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-200">
+        <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
           <div className="flex items-center space-x-3">
             <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
               <Sparkles className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h2 className="text-xl font-semibold text-gray-800">
+              <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
                 {isEditing ? 'Edit Dream' : 'Dream Details'}
               </h2>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-gray-500 dark:text-gray-400">
                 {note.date ? format(new Date(note.date), 'EEEE, MMMM d, yyyy') : 'No date'}
               </p>
             </div>
@@ -96,41 +96,51 @@ export function NoteDetailModal({ isOpen, onClose, note, onUpdate }: NoteDetailM
               <>
                 <button
                   onClick={() => setIsAiChatOpen(true)}
-                  className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg hover:from-purple-600 hover:to-pink-600 transition-colors"
+                  className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 dark:from-purple-600 dark:to-pink-600 text-white rounded-lg hover:from-purple-600 hover:to-pink-600 dark:hover:from-purple-500 dark:hover:to-pink-500 transition-all duration-200 shadow-md hover:shadow-lg"
+                  title="Enhance with AI"
                 >
-                  <MessageCircle className="w-4 h-4" />
-                  <span>AI Chat</span>
+                  <Sparkles className="w-4 h-4" />
+                  <span className="text-sm font-medium">AI Enhance</span>
                 </button>
                 <button
                   onClick={() => setIsEditing(true)}
-                  className="flex items-center space-x-2 px-4 py-2 bg-purple-100 text-purple-700 rounded-lg hover:bg-purple-200 transition-colors"
+                  className="flex items-center space-x-2 px-4 py-2 bg-blue-500 dark:bg-blue-600 text-white rounded-lg hover:bg-blue-600 dark:hover:bg-blue-500 transition-colors shadow-md hover:shadow-lg"
+                  title="Edit Dream"
                 >
                   <Edit3 className="w-4 h-4" />
-                  <span>Edit</span>
+                  <span className="text-sm font-medium">Edit</span>
                 </button>
               </>
             ) : (
               <div className="flex items-center space-x-2">
                 <button
-                  onClick={() => setIsEditing(false)}
-                  className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+                  onClick={() => {
+                    setIsEditing(false)
+                    setEditedNote({
+                      title: note.title,
+                      content: note.content,
+                      tags: [...note.tags],
+                      date: note.date,
+                    })
+                  }}
+                  className="px-4 py-2 text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-slate-600 rounded-lg hover:bg-gray-200 dark:hover:bg-slate-500 transition-colors shadow-md hover:shadow-lg"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleSave}
                   disabled={isSaving}
-                  className="flex items-center space-x-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors disabled:opacity-50"
+                  className="flex items-center space-x-2 px-4 py-2 bg-green-500 dark:bg-green-600 text-white rounded-lg hover:bg-green-600 dark:hover:bg-green-500 transition-colors shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <Save className="w-4 h-4" />
-                  <span>{isSaving ? 'Saving...' : 'Save'}</span>
+                  <span className="text-sm font-medium">{isSaving ? 'Saving...' : 'Save Changes'}</span>
                 </button>
               </div>
             )}
             
             <button
               onClick={onClose}
-              className="p-2 text-gray-400 hover:text-gray-600 transition-colors"
+              className="p-2 text-gray-400 dark:text-gray-300 hover:text-gray-600 dark:hover:text-gray-100 rounded-lg transition-colors"
             >
               <X className="w-5 h-5" />
             </button>
@@ -142,7 +152,7 @@ export function NoteDetailModal({ isOpen, onClose, note, onUpdate }: NoteDetailM
           <div className="space-y-6">
             {/* Title */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Title
               </label>
               {isEditing ? (
@@ -150,17 +160,17 @@ export function NoteDetailModal({ isOpen, onClose, note, onUpdate }: NoteDetailM
                   type="text"
                   value={editedNote.title || ''}
                   onChange={(e) => setEditedNote(prev => ({ ...prev, title: e.target.value }))}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-lg"
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 dark:bg-slate-700 dark:text-white rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-lg"
                   placeholder="Enter dream title..."
                 />
               ) : (
-                <h3 className="text-2xl font-semibold text-gray-800">{note.title}</h3>
+                <h3 className="text-2xl font-semibold text-gray-800 dark:text-white">{note.title}</h3>
               )}
             </div>
 
             {/* Content */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Dream Description
               </label>
               {isEditing ? (
@@ -168,19 +178,19 @@ export function NoteDetailModal({ isOpen, onClose, note, onUpdate }: NoteDetailM
                   value={editedNote.content || ''}
                   onChange={(e) => setEditedNote(prev => ({ ...prev, content: e.target.value }))}
                   rows={12}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 dark:bg-slate-700 dark:text-white rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
                   placeholder="Describe your dream in detail..."
                 />
               ) : (
                 <div className="prose max-w-none">
-                  <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">{note.content}</p>
+                  <p className="text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">{note.content}</p>
                 </div>
               )}
             </div>
 
             {/* Date */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 <Calendar className="w-4 h-4 inline mr-1" />
                 Date
               </label>
@@ -189,16 +199,16 @@ export function NoteDetailModal({ isOpen, onClose, note, onUpdate }: NoteDetailM
                   type="date"
                   value={editedNote.date ? format(new Date(editedNote.date), 'yyyy-MM-dd') : ''}
                   onChange={(e) => setEditedNote(prev => ({ ...prev, date: new Date(e.target.value) }))}
-                  className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  className="px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-slate-700 dark:text-white rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 />
               ) : (
-                <p className="text-gray-600">{note.date ? format(new Date(note.date), 'EEEE, MMMM d, yyyy') : 'No date'}</p>
+                <p className="text-gray-600 dark:text-gray-400">{note.date ? format(new Date(note.date), 'EEEE, MMMM d, yyyy') : 'No date'}</p>
               )}
             </div>
 
             {/* Tags */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 <Tag className="w-4 h-4 inline mr-1" />
                 Tags
               </label>
@@ -207,13 +217,13 @@ export function NoteDetailModal({ isOpen, onClose, note, onUpdate }: NoteDetailM
                 {(isEditing ? editedNote.tags : note.tags)?.map((tag, index) => (
                   <span
                     key={index}
-                    className="inline-flex items-center px-3 py-1 bg-purple-100 text-purple-700 text-sm rounded-full"
+                    className="inline-flex items-center px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-sm rounded-full"
                   >
                     {tag}
                     {isEditing && (
                       <button
                         onClick={() => handleRemoveTag(tag)}
-                        className="ml-2 text-purple-500 hover:text-purple-700"
+                        className="ml-2 text-purple-500 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-200"
                       >
                         <X className="w-3 h-3" />
                       </button>
@@ -230,11 +240,11 @@ export function NoteDetailModal({ isOpen, onClose, note, onUpdate }: NoteDetailM
                     onChange={(e) => setNewTag(e.target.value)}
                     onKeyPress={handleKeyPress}
                     placeholder="Add a tag..."
-                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm"
+                    className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-slate-700 dark:text-white rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm"
                   />
                   <button
                     onClick={handleAddTag}
-                    className="px-4 py-2 bg-purple-100 text-purple-700 rounded-lg hover:bg-purple-200 transition-colors text-sm"
+                    className="px-4 py-2 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-lg hover:bg-purple-200 dark:hover:bg-purple-900/50 transition-colors text-sm"
                   >
                     Add
                   </button>
@@ -245,11 +255,11 @@ export function NoteDetailModal({ isOpen, onClose, note, onUpdate }: NoteDetailM
             {/* Images placeholder */}
             {note.images && note.images.length > 0 && (
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   <ImageIcon className="w-4 h-4 inline mr-1" />
                   Images
                 </label>
-                <div className="text-gray-500 text-sm">
+                <div className="text-gray-500 dark:text-gray-400 text-sm">
                   {note.images.length} image(s) attached
                 </div>
               </div>
@@ -257,15 +267,15 @@ export function NoteDetailModal({ isOpen, onClose, note, onUpdate }: NoteDetailM
 
             {/* AI Edited Badge */}
             {note.aiEdited && (
-              <div className="flex items-center space-x-2 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                <Sparkles className="w-4 h-4 text-blue-600" />
-                <span className="text-sm text-blue-700">This dream has been enhanced by AI</span>
+              <div className="flex items-center space-x-2 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+                <Sparkles className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                <span className="text-sm text-blue-700 dark:text-blue-300">This dream has been enhanced by AI</span>
               </div>
             )}
 
             {/* Metadata */}
-            <div className="pt-4 border-t border-gray-200">
-              <div className="flex justify-between text-xs text-gray-500">
+            <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+              <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400">
                 <span>Created: {note.createdAt ? format(new Date(note.createdAt), 'MMM d, yyyy \\at h:mm a') : 'Unknown'}</span>
                 <span>Updated: {note.updatedAt ? format(new Date(note.updatedAt), 'MMM d, yyyy \\at h:mm a') : 'Unknown'}</span>
               </div>
