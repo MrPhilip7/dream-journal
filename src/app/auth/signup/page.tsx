@@ -4,6 +4,9 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { signIn } from 'next-auth/react'
+import { validatePassword } from '@/lib/password-validation'
+import PasswordStrengthIndicator from '@/components/password-strength-indicator'
+import { Eye, EyeOff } from 'lucide-react'
 
 export default function SignUpPage() {
   const [formData, setFormData] = useState({
@@ -15,6 +18,8 @@ export default function SignUpPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const router = useRouter()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,13 +37,15 @@ export default function SignUpPage() {
 
     // Validation
     if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match')
+      setError('Hasła nie są identyczne')
       setIsLoading(false)
       return
     }
 
-    if (formData.password.length < 6) {
-      setError('Password must be at least 6 characters long')
+    // Walidacja siły hasła
+    const passwordValidation = validatePassword(formData.password)
+    if (!passwordValidation.isValid) {
+      setError('Hasło nie spełnia wymagań bezpieczeństwa. Sprawdź wskaźnik siły hasła poniżej.')
       setIsLoading(false)
       return
     }
@@ -80,7 +87,21 @@ export default function SignUpPage() {
       }, 1500)
 
     } catch (error: any) {
-      setError(error.message || 'An error occurred during registration')
+      // Obsługa błędów z backendu
+      if (error.message && error.message.includes('errors')) {
+        try {
+          const errorData = JSON.parse(error.message)
+          if (errorData.errors && Array.isArray(errorData.errors)) {
+            setError(`Hasło nie spełnia wymagań: ${errorData.errors.join(', ')}`)
+          } else {
+            setError(errorData.message || 'Wystąpił błąd podczas rejestracji')
+          }
+        } catch {
+          setError(error.message || 'Wystąpił błąd podczas rejestracji')
+        }
+      } else {
+        setError(error.message || 'Wystąpił błąd podczas rejestracji')
+      }
     } finally {
       setIsLoading(false)
     }
@@ -105,8 +126,8 @@ export default function SignUpPage() {
               />
             </svg>
           </div>
-          <h1 className="text-2xl font-bold text-white mb-2">Create Account</h1>
-          <p className="text-purple-200">Start your dream journaling journey</p>
+          <h1 className="text-2xl font-bold text-white mb-2">Utwórz konto</h1>
+          <p className="text-purple-200">Rozpocznij swoją podróż z dziennikiem snów</p>
         </div>
 
         {error && (
@@ -124,7 +145,7 @@ export default function SignUpPage() {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label htmlFor="name" className="block text-sm font-medium text-purple-200 mb-2">
-              Full Name
+              Imię i nazwisko
             </label>
             <input
               type="text"
@@ -133,7 +154,7 @@ export default function SignUpPage() {
               value={formData.name}
               onChange={handleChange}
               className="w-full px-3 py-2 bg-white/20 border border-white/30 rounded-md text-white placeholder-purple-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-              placeholder="Enter your full name"
+              placeholder="Wprowadź swoje imię i nazwisko"
               required
             />
           </div>
@@ -149,42 +170,80 @@ export default function SignUpPage() {
               value={formData.email}
               onChange={handleChange}
               className="w-full px-3 py-2 bg-white/20 border border-white/30 rounded-md text-white placeholder-purple-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-              placeholder="Enter your email"
+              placeholder="Wprowadź swój email"
               required
             />
           </div>
 
           <div>
             <label htmlFor="password" className="block text-sm font-medium text-purple-200 mb-2">
-              Password
+              Hasło
             </label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              className="w-full px-3 py-2 bg-white/20 border border-white/30 rounded-md text-white placeholder-purple-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-              placeholder="Create a password (min. 6 characters)"
-              required
-              minLength={6}
+            <div className="relative">
+              <input
+                type={showPassword ? 'text' : 'password'}
+                id="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                className="w-full px-3 py-2 pr-10 bg-white/20 border border-white/30 rounded-md text-white placeholder-purple-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                placeholder="Utwórz silne hasło"
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute inset-y-0 right-0 pr-3 flex items-center text-purple-300 hover:text-white"
+              >
+                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
+            </div>
+            <PasswordStrengthIndicator
+              password={formData.password}
+              showPassword={showPassword}
+              onToggleShowPassword={() => setShowPassword(!showPassword)}
             />
           </div>
 
           <div>
             <label htmlFor="confirmPassword" className="block text-sm font-medium text-purple-200 mb-2">
-              Confirm Password
+              Potwierdź hasło
             </label>
-            <input
-              type="password"
-              id="confirmPassword"
-              name="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              className="w-full px-3 py-2 bg-white/20 border border-white/30 rounded-md text-white placeholder-purple-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-              placeholder="Confirm your password"
-              required
-            />
+            <div className="relative">
+              <input
+                type={showConfirmPassword ? 'text' : 'password'}
+                id="confirmPassword"
+                name="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                className="w-full px-3 py-2 pr-10 bg-white/20 border border-white/30 rounded-md text-white placeholder-purple-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                placeholder="Potwierdź swoje hasło"
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="absolute inset-y-0 right-0 pr-3 flex items-center text-purple-300 hover:text-white"
+              >
+                {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
+            </div>
+            {formData.confirmPassword && formData.password !== formData.confirmPassword && (
+              <div className="mt-2 text-xs text-red-300 flex items-center space-x-1">
+                <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                </svg>
+                <span>Hasła nie są identyczne</span>
+              </div>
+            )}
+            {formData.confirmPassword && formData.password === formData.confirmPassword && (
+              <div className="mt-2 text-xs text-green-300 flex items-center space-x-1">
+                <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                </svg>
+                <span>Hasła są identyczne</span>
+              </div>
+            )}
           </div>
 
           <button
@@ -192,7 +251,7 @@ export default function SignUpPage() {
             disabled={isLoading}
             className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-semibold py-2 px-4 rounded-md transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed mt-6"
           >
-            {isLoading ? 'Creating Account...' : 'Create Account'}
+            {isLoading ? 'Tworzenie konta...' : 'Utwórz konto'}
           </button>
         </form>
 
@@ -217,15 +276,15 @@ export default function SignUpPage() {
             <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
             <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
           </svg>
-          Sign up with Google
+          Zarejestruj się przez Google
         </button>
 
         {/* Sign In Link */}
         <div className="text-center mt-6">
           <p className="text-purple-200">
-            Already have an account?{' '}
+            Masz już konto?{' '}
             <Link href="/auth/signin" className="text-purple-400 hover:text-purple-300 font-semibold">
-              Sign in here
+              Zaloguj się tutaj
             </Link>
           </p>
         </div>
