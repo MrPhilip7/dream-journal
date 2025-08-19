@@ -68,7 +68,7 @@ export function AnalyticsDashboard({ isOpen, onClose }: AnalyticsDashboardProps)
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-6xl max-h-[90vh] overflow-hidden">
+      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-6xl max-h-[90vh] overflow-hidden">
         {/* Header */}
         <div className="bg-gradient-to-r from-purple-600 to-pink-600 text-white p-6">
           <div className="flex items-center justify-between">
@@ -111,7 +111,7 @@ export function AnalyticsDashboard({ isOpen, onClose }: AnalyticsDashboardProps)
         </div>
 
         {/* Tabs */}
-        <div className="border-b border-gray-200">
+        <div className="border-b border-gray-200 dark:border-gray-700">
           <div className="flex space-x-8 px-6">
             {tabs.map(tab => {
               const Icon = tab.icon
@@ -121,8 +121,8 @@ export function AnalyticsDashboard({ isOpen, onClose }: AnalyticsDashboardProps)
                   onClick={() => setActiveTab(tab.id)}
                   className={`flex items-center space-x-2 py-4 border-b-2 transition-colors ${
                     activeTab === tab.id
-                      ? 'border-purple-500 text-purple-600'
-                      : 'border-transparent text-gray-500 hover:text-gray-700'
+                      ? 'border-purple-500 text-purple-600 dark:text-purple-400'
+                      : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
                   }`}
                 >
                   <Icon className="w-4 h-4" />
@@ -189,14 +189,14 @@ export function AnalyticsDashboard({ isOpen, onClose }: AnalyticsDashboardProps)
                   {/* Mood Distribution */}
                   {overviewData.moodDistribution && overviewData.moodDistribution.length > 0 && (
                     <div className="bg-gray-50 rounded-xl p-6">
-                      <h3 className="text-lg font-semibold text-gray-900 mb-4">Mood Distribution</h3>
+                      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Mood Distribution</h3>
                       <div className="space-y-3">
                         {overviewData.moodDistribution.map(item => {
                           const percentage = Math.round((item.count / overviewData.totalDreams) * 100)
                           return (
                             <div key={item.mood} className="flex items-center space-x-3">
                               <span className="text-lg">{getMoodEmoji(item.mood)}</span>
-                              <span className="capitalize font-medium text-gray-700 w-20">{item.mood}</span>
+                              <span className="capitalize font-medium text-gray-700 dark:text-gray-300 w-20">{item.mood}</span>
                               <div className="flex-1 bg-gray-200 rounded-full h-2">
                                 <div
                                   className="h-2 rounded-full transition-all duration-300"
@@ -206,7 +206,7 @@ export function AnalyticsDashboard({ isOpen, onClose }: AnalyticsDashboardProps)
                                   }}
                                 />
                               </div>
-                              <span className="text-sm text-gray-600 w-12 text-right">{item.count}</span>
+                              <span className="text-sm text-gray-600 dark:text-gray-400 w-12 text-right">{item.count}</span>
                             </div>
                           )
                         })}
@@ -217,7 +217,7 @@ export function AnalyticsDashboard({ isOpen, onClose }: AnalyticsDashboardProps)
               ) : (
                 <div className="text-center py-12">
                   <Moon className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                  <p className="text-gray-500">No dream data available for this period</p>
+                  <p className="text-gray-500 dark:text-gray-400">No dream data available for this period</p>
                 </div>
               )}
             </div>
@@ -243,16 +243,16 @@ export function AnalyticsDashboard({ isOpen, onClose }: AnalyticsDashboardProps)
                   
                   {symbolData.topSymbols && symbolData.topSymbols.length > 0 && (
                     <div className="bg-gray-50 rounded-xl p-6">
-                      <h3 className="text-lg font-semibold text-gray-900 mb-4">Most Common Symbols</h3>
+                      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Most Common Symbols</h3>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {symbolData.topSymbols.map((symbol, index) => (
-                          <div key={symbol.symbol} className="flex items-center space-x-3 p-3 bg-white rounded-lg">
+                          <div key={symbol.symbol} className="flex items-center space-x-3 p-3 bg-white dark:bg-gray-700 rounded-lg">
                             <div className="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center">
                               <span className="text-sm font-bold text-indigo-600">#{index + 1}</span>
                             </div>
                             <div className="flex-1">
-                              <p className="font-medium text-gray-900 capitalize">{symbol.symbol}</p>
-                              <p className="text-sm text-gray-500">{symbol.count} occurrences</p>
+                              <p className="font-medium text-gray-900 dark:text-white capitalize">{symbol.symbol}</p>
+                              <p className="text-sm text-gray-500 dark:text-gray-400">{symbol.count} occurrences</p>
                             </div>
                           </div>
                         ))}
@@ -263,7 +263,7 @@ export function AnalyticsDashboard({ isOpen, onClose }: AnalyticsDashboardProps)
               ) : (
                 <div className="text-center py-12">
                   <Brain className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                  <p className="text-gray-500">No symbol data available for this period</p>
+                  <p className="text-gray-500 dark:text-gray-400">No symbol data available for this period</p>
                 </div>
               )}
             </div>
@@ -272,8 +272,8 @@ export function AnalyticsDashboard({ isOpen, onClose }: AnalyticsDashboardProps)
           {(activeTab === 'moods' || activeTab === 'trends') && (
             <div className="text-center py-12">
               <Zap className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <p className="text-gray-500">Advanced charts coming soon!</p>
-              <p className="text-sm text-gray-400 mt-2">This feature will include interactive mood trends and dream pattern visualizations</p>
+              <p className="text-gray-500 dark:text-gray-400">Advanced charts coming soon!</p>
+              <p className="text-sm text-gray-400 dark:text-gray-500 mt-2">This feature will include interactive mood trends and dream pattern visualizations</p>
             </div>
           )}
         </div>

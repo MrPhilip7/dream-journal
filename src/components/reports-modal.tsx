@@ -158,7 +158,7 @@ export function ReportsModal({ isOpen, onClose }: ReportsModalProps) {
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden">
+      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden">
         {/* Header */}
         <div className="bg-gradient-to-r from-emerald-600 to-teal-600 text-white p-6">
           <div className="flex items-center justify-between">
@@ -299,8 +299,8 @@ export function ReportsModal({ isOpen, onClose }: ReportsModalProps) {
 
               {/* Period Info */}
               <div className="bg-gray-50 rounded-xl p-4">
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Report Period</h3>
-                <p className="text-gray-600">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Report Period</h3>
+                <p className="text-gray-600 dark:text-gray-300">
                   {formatDate(currentData.startDate)} - {formatDate(currentData.endDate)}
                 </p>
               </div>
@@ -328,15 +328,15 @@ export function ReportsModal({ isOpen, onClose }: ReportsModalProps) {
                 <div className="bg-white border border-gray-200 rounded-xl p-6">
                   <div className="flex items-center space-x-2 mb-4">
                     <Heart className="w-5 h-5 text-pink-600" />
-                    <h3 className="text-lg font-semibold text-gray-900">Mood Distribution</h3>
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Mood Distribution</h3>
                   </div>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                     {currentData.moodDistribution.map(mood => (
                       <div key={mood.mood} className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
                         <span className="text-xl">{getMoodEmoji(mood.mood)}</span>
                         <div>
-                          <p className="font-medium text-gray-900 capitalize">{mood.mood}</p>
-                          <p className="text-sm text-gray-500">{mood.count} dreams</p>
+                          <p className="font-medium text-gray-900 dark:text-white capitalize">{mood.mood}</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">{mood.count} dreams</p>
                         </div>
                       </div>
                     ))}
@@ -349,7 +349,7 @@ export function ReportsModal({ isOpen, onClose }: ReportsModalProps) {
                 <div className="bg-white border border-gray-200 rounded-xl p-6">
                   <div className="flex items-center space-x-2 mb-4">
                     <Brain className="w-5 h-5 text-indigo-600" />
-                    <h3 className="text-lg font-semibold text-gray-900">Common Symbols</h3>
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Common Symbols</h3>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     {currentData.topSymbols.map((symbol, index) => (
@@ -358,8 +358,8 @@ export function ReportsModal({ isOpen, onClose }: ReportsModalProps) {
                           <span className="text-sm font-bold text-indigo-600">#{index + 1}</span>
                         </div>
                         <div>
-                          <p className="font-medium text-gray-900 capitalize">{symbol.symbol}</p>
-                          <p className="text-sm text-gray-500">{symbol.count} occurrences</p>
+                          <p className="font-medium text-gray-900 dark:text-white capitalize">{symbol.symbol}</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">{symbol.count} occurrences</p>
                         </div>
                       </div>
                     ))}
@@ -370,8 +370,8 @@ export function ReportsModal({ isOpen, onClose }: ReportsModalProps) {
           ) : (
             <div className="text-center py-12">
               <FileText className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <p className="text-gray-500">No data available for this period</p>
-              <p className="text-sm text-gray-400 mt-2">Try selecting a different time period</p>
+              <p className="text-gray-500 dark:text-gray-400">No data available for this period</p>
+              <p className="text-sm text-gray-400 dark:text-gray-500 mt-2">Try selecting a different time period</p>
             </div>
           )}
         </div>
