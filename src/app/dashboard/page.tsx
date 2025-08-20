@@ -76,8 +76,8 @@ export default function Dashboard() {
         <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <img 
-              src="/draims-logo.svg" 
-              alt="DRAIMS Logo" 
+              src="/snyo-logo.svg"
+            alt="SNYO Logo" 
               className="w-8 h-8"
             />
             <h1 className="text-xl font-semibold text-gray-800 dark:text-gray-100">{t('dreamJournal')}</h1>

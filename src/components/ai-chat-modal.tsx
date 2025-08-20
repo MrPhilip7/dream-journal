@@ -53,8 +53,8 @@ export function AiChatModal({ isOpen, onClose, note, onNoteUpdate }: AiChatModal
           id: generateMessageId(),
           role: 'assistant',
           content: note 
-            ? `Hello! I'm here to help you enhance your dream journal entry "${note.title}". I can help you:\n\n• Improve the narrative and add vivid details\n• Analyze symbols and their meanings\n• Explore emotional themes\n• Expand creatively on your dream\n• Clarify and organize your thoughts\n\nWhat would you like to explore about your dream?`
-            : `Hello! I'm your dream journal AI assistant. I can help you create and enhance dream entries, analyze symbols, explore meanings, and improve your dream narratives. How can I assist you today?`,
+            ? `Hello! I'm here to help you enhance your SNYO entry "${note.title}". I can help you:\n\n• Improve the narrative and add vivid details\n• Analyze symbols and their meanings\n• Explore emotional themes\n• Expand creatively on your dream\n• Clarify and organize your thoughts\n\nWhat would you like to explore about your dream?`
+        : `Hello! I'm your SNYO AI assistant. I can help you create and enhance dream entries, analyze symbols, explore meanings, and improve your dream narratives. How can I assist you today?`,
           timestamp: new Date()
         }
         setMessages([welcomeMessage])
@@ -160,7 +160,7 @@ export function AiChatModal({ isOpen, onClose, note, onNoteUpdate }: AiChatModal
       const enhancementMessage: Message = {
         id: generateMessageId(),
         role: 'assistant',
-        content: `I've enhanced your dream journal entry with ${enhancementType} improvements! The updated content has been saved to your note.`,
+        content: `I've enhanced your SNYO entry with ${enhancementType} improvements! The updated content has been saved to your note.`,
         timestamp: new Date()
       }
       setMessages(prev => [...prev, enhancementMessage])

@@ -16,8 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Dream Journal - Your Creativity Companion",
-  description: "A dream journaling app that combines manual note-taking with AI-assisted creativity enhancement.",
+  title: "SNYO - Your Dream Companion",
+  description: "A dream app that combines manual note-taking with AI-assisted creativity enhancement.",
 };
 
 export default function RootLayout({

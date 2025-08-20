@@ -13,7 +13,7 @@ interface LanguageContextType {
 const translations = {
   en: {
     // Dashboard
-    dreamJournal: 'Dream Journal',
+    dreamJournal: 'SNYO',
     welcome: 'Welcome',
     signOut: 'Sign Out',
     selectDate: 'Select Date',
@@ -49,7 +49,7 @@ const translations = {
     // AI Chat Modal
     aiDreamAssistant: 'AI Dream Assistant',
     enhancing: 'Enhancing',
-    dreamJournalAiChat: 'Dream Journal AI Chat',
+    dreamJournalAiChat: 'SNYO AI Chat',
     quickEnhancements: 'Quick enhancements',
     aiThinking: 'AI is thinking',
     askAboutDream: 'Ask me anything about your dream...',
@@ -94,7 +94,7 @@ const translations = {
   },
   pl: {
     // Dashboard
-    dreamJournal: 'Dziennik Snów',
+    dreamJournal: 'SNYO',
     welcome: 'Witaj',
     signOut: 'Wyloguj',
     selectDate: 'Wybierz Datę',

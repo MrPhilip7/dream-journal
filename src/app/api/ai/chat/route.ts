@@ -26,10 +26,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Messages array is required' }, { status: 400 })
     }
 
-    // System prompt for dream journal AI assistant
+    // System prompt for SNYO AI assistant
     const systemPrompt = {
       role: 'system',
-      content: `You are a helpful AI assistant specialized in dream analysis and creative writing. You help users enhance their dream journal entries by:
+      content: `You are a helpful AI assistant specialized in dream analysis and creative writing. You help users enhance their SNYO entries by:
 
 1. **Dream Enhancement**: Improve narrative flow, add vivid descriptions, and help users recall more details
 2. **Symbol Analysis**: Identify and explain potential symbols and meanings in dreams

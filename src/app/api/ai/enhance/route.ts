@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
 
     // Define enhancement prompts based on type
     const enhancementPrompts = {
-      narrative: `Please enhance this dream journal entry by improving the narrative flow, adding vivid sensory details, and making it more engaging to read. Keep the core content and meaning intact, but make it more immersive and well-structured.`,
+      narrative: `Please enhance this SNYO entry by improving the narrative flow, adding vivid sensory details, and making it more engaging to read. Keep the core content and meaning intact, but make it more immersive and well-structured.`,
       
       symbols: `Analyze this dream for symbols and their potential meanings. Provide insights into what various elements might represent, but present them as possibilities rather than definitive interpretations. Also suggest any recurring themes or patterns.`,
       
@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
       
       creative: `Expand on this dream creatively while staying true to the original experience. Add poetic language, explore metaphorical meanings, and help the dreamer see their dream as a creative narrative. Make it beautiful and inspiring.`,
       
-      clarity: `Help clarify and organize this dream journal entry. Improve the structure, fill in logical gaps, and help the dreamer remember more details by asking thoughtful questions and providing gentle prompts.`
+      clarity: `Help clarify and organize this SNYO entry. Improve the structure, fill in logical gaps, and help the dreamer remember more details by asking thoughtful questions and providing gentle prompts.`
     }
 
     const selectedPrompt = customPrompt || enhancementPrompts[enhancementType as keyof typeof enhancementPrompts] || enhancementPrompts.narrative
@@ -59,7 +59,7 @@ export async function POST(request: NextRequest) {
       messages: [
         {
           role: 'system',
-          content: `You are a skilled dream journal assistant. Your role is to help enhance dream journal entries while being respectful of the dreamer's personal experience. Always maintain the authenticity of the original dream.`
+          content: `You are a skilled SNYO assistant. Your role is to help enhance dream entries while being respectful of the dreamer's personal experience. Always maintain the authenticity of the original dream.`
         },
         {
           role: 'user',

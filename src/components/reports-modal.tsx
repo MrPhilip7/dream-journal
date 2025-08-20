@@ -75,7 +75,7 @@ export function ReportsModal({ isOpen, onClose }: ReportsModalProps) {
       ? weekOptions[selectedWeek]?.label 
       : monthOptions[selectedMonth]?.label
     
-    let report = `# Dream Journal ${period} Report\n`
+    let report = `# SNYO ${period} Report\n`
     report += `## ${periodLabel}\n\n`
     
     if (reportType === 'weekly' && weeklyData) {

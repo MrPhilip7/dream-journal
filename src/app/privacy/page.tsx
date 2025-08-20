@@ -162,7 +162,7 @@ export default function PrivacyPage() {
                 <div className="flex-1">
                   <h3 className="text-lg font-semibold text-card-foreground mb-2">Export Your Data</h3>
                   <p className="text-muted-foreground mb-4">
-                    Download a complete copy of your dream journal data in JSON format. This includes all your notes, analytics, and account information.
+                    Download a complete copy of your SNYO data in JSON format. This includes all your notes, analytics, and account information.
                   </p>
                   <button
                     onClick={handleExportData}

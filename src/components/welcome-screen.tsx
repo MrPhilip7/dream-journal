@@ -42,15 +42,15 @@ export default function WelcomeScreen() {
       <div className="relative z-10 min-h-screen flex items-center justify-center px-4">
         <div className="text-center space-y-16 max-w-6xl mx-auto">
           {/* Enhanced Hero Section */}
-          <div className="space-y-8 animate-fade-in">
+          <div className="space-y-8 animate-fade-in mt-16">
             {/* Logo with enhanced animation */}
-            <div className="mx-auto w-40 h-40 flex items-center justify-center relative group">
+            <div className="mx-auto w-32 h-32 flex items-center justify-center relative group">
               <div className="absolute inset-0 bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 rounded-full animate-spin-slow opacity-30 group-hover:opacity-50 transition-opacity duration-500"></div>
               <div className="absolute inset-2 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 rounded-full animate-pulse opacity-20"></div>
               <img 
-                src="/draims-logo.svg" 
-                alt="DRAIMS Logo" 
-                className="w-28 h-28 relative z-10 drop-shadow-2xl group-hover:scale-110 transition-transform duration-500"
+                src="/snyo-logo.svg" 
+                alt="SNYO Logo" 
+                className="w-28 h-28 relative z-10 drop-shadow-2xl group-hover:scale-110 transition-transform duration-500 mt-4"
               />
               <div className="absolute -top-3 -right-3 animate-bounce">
                 <div className="w-8 h-8 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full flex items-center justify-center">
@@ -63,7 +63,7 @@ export default function WelcomeScreen() {
             <div className="space-y-6">
               <div className="relative">
                 <h1 className="text-6xl md:text-8xl lg:text-9xl font-black bg-gradient-to-r from-white via-purple-200 to-pink-200 bg-clip-text text-transparent animate-fade-in-delay tracking-tight">
-                  DRAIMS
+                  SNYO
                 </h1>
                 <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg blur opacity-20 animate-pulse"></div>
               </div>
@@ -103,7 +103,7 @@ export default function WelcomeScreen() {
                 </div>
                 <div className="flex items-center space-x-2">
                   <Moon className="w-5 h-5" />
-                  <span className="text-sm">Dziennik snów</span>
+                  <span className="text-sm">SNYO</span>
                 </div>
               </div>
             </div>
@@ -240,7 +240,7 @@ export default function WelcomeScreen() {
               Dołącz do tysięcy użytkowników
             </h2>
             <p className="text-xl text-white/80 max-w-3xl mx-auto">
-              Którzy już odkrywają tajemnice swoich snów z pomocą DRAIMS
+              Którzy już odkrywają tajemnice swoich snów z pomocą SNYO
             </p>
           </div>
           
@@ -325,7 +325,7 @@ export default function WelcomeScreen() {
                 </div>
                 
                 <blockquote className="text-white/90 mb-8 text-lg leading-relaxed group-hover:text-white transition-colors duration-300">
-                  "DRAIMS całkowicie zmieniło moje podejście do snów. Analiza AI jest niesamowicie precyzyjna i pomogła mi zrozumieć wzorce, których wcześniej nie dostrzegałam."
+                  "SNYO całkowicie zmieniło moje podejście do snów. Analiza AI jest niesamowicie precyzyjna i pomogła mi zrozumieć wzorce, których wcześniej nie dostrzegałam."
                 </blockquote>
                 
                 <div className="flex items-center">
@@ -360,7 +360,7 @@ export default function WelcomeScreen() {
                 </div>
                 
                 <blockquote className="text-white/90 mb-8 text-lg leading-relaxed group-hover:text-white transition-colors duration-300">
-                  "Jako osoba zajmująca się rozwojem osobistym, DRAIMS stało się nieocenionym narzędziem. Interpretacje są głębokie i pomocne w codziennym życiu."
+                  "Jako osoba zajmująca się rozwojem osobistym, SNYO stało się nieocenionym narzędziem. Interpretacje są głębokie i pomocne w codziennym życiu."
                 </blockquote>
                 
                 <div className="flex items-center">
@@ -455,7 +455,7 @@ export default function WelcomeScreen() {
                   </li>
                   <li className="flex items-center text-white/80">
                     <Check className="w-5 h-5 text-green-400 mr-3 flex-shrink-0" />
-                    <span>Dziennik snów</span>
+                    <span>SNYO</span>
                   </li>
                 </ul>
                 
@@ -635,7 +635,7 @@ export default function WelcomeScreen() {
                   </div>
                 </div>
                 <span className="text-3xl font-black bg-gradient-to-r from-purple-400 via-pink-400 to-indigo-400 bg-clip-text text-transparent">
-                  DRAIMS
+                  SNYO
                 </span>
               </div>
               <p className="text-white/80 mb-8 max-w-md text-lg leading-relaxed">
@@ -706,7 +706,7 @@ export default function WelcomeScreen() {
             <div className="flex flex-col md:flex-row justify-between items-center space-y-6 md:space-y-0">
               <div className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-8">
                 <p className="text-white/60 text-sm">
-                  © 2024 DRAIMS. Wszystkie prawa zastrzeżone.
+                  © 2024 SNYO. Wszystkie prawa zastrzeżone.
                 </p>
                 <div className="flex items-center space-x-6 text-white/60 text-sm">
                   <span className="flex items-center space-x-1">
