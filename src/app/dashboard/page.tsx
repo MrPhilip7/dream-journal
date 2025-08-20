@@ -3,8 +3,9 @@
 import { useSession, signOut } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { Calendar, Plus, MessageCircle, LogOut, Sparkles, BarChart3, FileText, Settings } from 'lucide-react'
+import { Calendar, Plus, MessageCircle, LogOut, Sparkles, BarChart3, FileText, Settings, Clock, List } from 'lucide-react'
 import { useNotes } from '@/hooks/use-notes'
+import { useAllNotes } from '@/hooks/use-all-notes'
 import NoteCreationModal from '@/components/note-creation-modal'
 import { NoteDetailModal } from '@/components/note-detail-modal'
 import { AiChatModal } from '@/components/ai-chat-modal'
@@ -19,13 +20,15 @@ export default function Dashboard() {
   const router = useRouter()
   const { t } = useLanguage()
   const [selectedDate, setSelectedDate] = useState(new Date())
+  const [activeTab, setActiveTab] = useState<'today' | 'all'>('today')
   const [isNoteModalOpen, setIsNoteModalOpen] = useState(false)
   const [selectedNote, setSelectedNote] = useState<any>(null)
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false)
   const [isAiChatOpen, setIsAiChatOpen] = useState(false)
   const [isAnalyticsOpen, setIsAnalyticsOpen] = useState(false)
   const [isReportsOpen, setIsReportsOpen] = useState(false)
-  const { notes, loading, error, createNote, updateNote, deleteNote } = useNotes(selectedDate)
+  const { notes: todayNotes, loading: todayLoading, error: todayError, createNote: createTodayNote, updateNote: updateTodayNote, deleteNote: deleteTodayNote } = useNotes(selectedDate)
+  const { notes: allNotes, loading: allLoading, error: allError, createNote: createAllNote, updateNote: updateAllNote, deleteNote: deleteAllNote } = useAllNotes()
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -45,8 +48,16 @@ export default function Dashboard() {
     return null
   }
 
+  // Get current data based on active tab
+  const currentNotes = activeTab === 'today' ? todayNotes : allNotes
+  const currentLoading = activeTab === 'today' ? todayLoading : allLoading
+  const currentError = activeTab === 'today' ? todayError : allError
+  const currentCreateNote = activeTab === 'today' ? createTodayNote : createAllNote
+  const currentUpdateNote = activeTab === 'today' ? updateTodayNote : updateAllNote
+  const currentDeleteNote = activeTab === 'today' ? deleteTodayNote : deleteAllNote
+
   const handleCreateNote = async (noteData: any) => {
-    const newNote = await createNote(noteData)
+    const newNote = await currentCreateNote(noteData)
     if (newNote) {
       setIsNoteModalOpen(false)
     }
@@ -58,11 +69,11 @@ export default function Dashboard() {
   }
 
   const handleUpdateNote = async (noteId: string, updates: any) => {
-    await updateNote(noteId, updates)
+    await currentUpdateNote(noteId, updates)
   }
 
   const handleDeleteNote = async (noteId: string) => {
-    const success = await deleteNote(noteId)
+    const success = await currentDeleteNote(noteId)
     if (success) {
       setIsDetailModalOpen(false)
       setSelectedNote(null)
@@ -106,35 +117,67 @@ export default function Dashboard() {
 
       {/* Main Content */}
       <main className="max-w-4xl mx-auto px-4 py-8">
-        {/* Date Picker */}
+        {/* Tab Navigation */}
         <div className="mb-8">
-          <div className="flex items-center space-x-3 mb-4">
-            <Calendar className="w-5 h-5 text-gray-600 dark:text-gray-400" />
-            <h2 className="text-lg font-medium text-gray-800 dark:text-gray-200">{t('selectDate')}</h2>
+          <div className="flex items-center space-x-1 bg-gray-100 dark:bg-gray-800 p-1 rounded-lg">
+            <button
+              onClick={() => setActiveTab('today')}
+              className={`flex items-center space-x-2 px-4 py-2 rounded-md font-medium transition-colors ${
+                activeTab === 'today'
+                  ? 'bg-purple-200 text-purple-800 dark:bg-purple-800 dark:text-purple-200'
+                  : 'text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700'
+              }`}
+            >
+              <Clock className="w-4 h-4" />
+              <span>{t('todaysDreams')}</span>
+            </button>
+            <button
+              onClick={() => setActiveTab('all')}
+              className={`flex items-center space-x-2 px-4 py-2 rounded-md font-medium transition-colors ${
+                activeTab === 'all'
+                  ? 'bg-purple-200 text-purple-800 dark:bg-purple-800 dark:text-purple-200'
+                  : 'text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700'
+              }`}
+            >
+              <List className="w-4 h-4" />
+              <span>{t('allDreams')}</span>
+            </button>
           </div>
-          <input
-            type="date"
-            value={selectedDate.toISOString().split('T')[0]}
-            onChange={(e) => setSelectedDate(new Date(e.target.value))}
-            className="px-4 py-2 border border-border bg-card text-card-foreground rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-          />
         </div>
+
+        {/* Date Picker - Only show for Today's Dreams tab */}
+        {activeTab === 'today' && (
+          <div className="mb-8">
+            <div className="flex items-center space-x-3 mb-4">
+              <Calendar className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+              <h2 className="text-lg font-medium text-gray-800 dark:text-gray-200">{t('selectDate')}</h2>
+            </div>
+            <input
+              type="date"
+              value={selectedDate.toISOString().split('T')[0]}
+              onChange={(e) => setSelectedDate(new Date(e.target.value))}
+              className="px-4 py-2 border border-border bg-card text-card-foreground rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+            />
+          </div>
+        )}
 
         {/* Dream Entries */}
         <div className="mb-8">
-          <h2 className="text-lg font-medium text-gray-800 dark:text-gray-200 mb-4">{t('dreamEntries')}</h2>
-          {error && (
+          <h2 className="text-lg font-medium text-gray-800 dark:text-gray-200 mb-4">
+            {activeTab === 'today' ? t('dreamEntries') : t('allDreams')}
+          </h2>
+          {currentError && (
             <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 px-4 py-3 rounded-lg mb-4">
-              {error}
+              {currentError}
             </div>
           )}
           <div className="space-y-4">
-            {loading ? (
+            {currentLoading ? (
               <div className="bg-card rounded-xl shadow-sm border border-border p-6">
                 <p className="text-gray-500 dark:text-gray-400 text-center py-8">{t('loadingDreams')}</p>
               </div>
-            ) : notes.length > 0 ? (
-              notes.map((note) => (
+            ) : currentNotes.length > 0 ? (
+              currentNotes.map((note) => (
                  <div 
                    key={note.id} 
                    onClick={() => handleNoteClick(note)}
@@ -142,9 +185,16 @@ export default function Dashboard() {
                  >
                    <div className="flex items-start justify-between mb-3">
                      <h3 className="text-lg font-medium text-gray-800 dark:text-gray-200">{note.title}</h3>
-                     <span className="text-sm text-gray-500 dark:text-gray-400">
-                       {note.createdAt.toLocaleDateString()}
-                     </span>
+                     <div className="text-right">
+                       <span className="text-sm text-gray-500 dark:text-gray-400 block">
+                         {note.date.toLocaleDateString()}
+                       </span>
+                       {activeTab === 'all' && (
+                         <span className="text-xs text-gray-400 dark:text-gray-500">
+                           {t('created')}: {note.createdAt.toLocaleDateString()}
+                         </span>
+                       )}
+                     </div>
                    </div>
                    <p className="text-gray-600 dark:text-gray-300 mb-4 overflow-hidden text-ellipsis line-clamp-3">{note.content}</p>
                    {note.tags.length > 0 && (
@@ -163,48 +213,39 @@ export default function Dashboard() {
                ))
             ) : (
               <div className="bg-card rounded-xl shadow-sm border border-border p-6">
-                <p className="text-gray-500 dark:text-gray-400 text-center py-8">{t('noDreams')}</p>
+                <p className="text-gray-500 dark:text-gray-400 text-center py-8">
+                  {activeTab === 'today' ? t('noDreams') : t('noDreamsAll')}
+                </p>
               </div>
             )}
           </div>
         </div>
 
         {/* Floating Action Buttons */}
-        <div className="fixed bottom-6 right-6 flex flex-col space-y-3 z-40">
-          {/* Analytics Button */}
+        <div className="fixed bottom-6 right-6 flex flex-col gap-3">
           <button
             onClick={() => setIsAnalyticsOpen(true)}
-            className="w-12 h-12 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center group"
-            title={t('analytics')}
+            className="bg-purple-600 hover:bg-purple-700 text-white p-4 rounded-full shadow-lg transition-colors duration-200"
           >
-            <BarChart3 className="w-5 h-5 group-hover:scale-110 transition-transform" />
+            <BarChart3 className="w-6 h-6" />
           </button>
-          
-          {/* Reports Button */}
           <button
             onClick={() => setIsReportsOpen(true)}
-            className="w-12 h-12 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center group"
-            title={t('reports')}
+            className="bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-lg transition-colors duration-200"
           >
-            <FileText className="w-5 h-5 group-hover:scale-110 transition-transform" />
+            <FileText className="w-6 h-6" />
           </button>
-          
-          {/* AI Chat Button */}
           <button
             onClick={() => setIsAiChatOpen(true)}
-            className="w-12 h-12 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center group"
-            title={t('aiDreamAssistant')}
+            className="bg-green-600 hover:bg-green-700 text-white p-4 rounded-full shadow-lg transition-colors duration-200"
           >
-            <Sparkles className="w-5 h-5 group-hover:scale-110 transition-transform" />
+            <MessageCircle className="w-6 h-6" />
           </button>
-          
-          {/* Create Note Button - Main Action */}
-          <button 
+          <button
             onClick={() => setIsNoteModalOpen(true)}
-            className="w-14 h-14 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 flex items-center justify-center group"
-            title={t('createNewDream')}
+            className="bg-indigo-600 hover:bg-indigo-700 text-white p-4 rounded-full shadow-lg transition-colors duration-200"
           >
-            <Plus className="w-6 h-6 group-hover:scale-110 transition-transform" />
+            <Plus className="w-6 h-6" />
           </button>
         </div>
       </main>
@@ -214,7 +255,7 @@ export default function Dashboard() {
         isOpen={isNoteModalOpen}
         onClose={() => setIsNoteModalOpen(false)}
         onSave={handleCreateNote}
-        defaultDate={selectedDate}
+        defaultDate={activeTab === 'today' ? selectedDate : new Date()}
       />
 
       {/* Note Detail Modal */}

@@ -25,6 +25,10 @@ const translations = {
     aiDreamAssistant: 'AI Dream Assistant',
     createNewDream: 'Create New Dream',
     settings: 'Settings',
+    todaysDreams: 'Today\'s Dreams',
+    allDreams: 'All Dreams',
+    noDreamsAll: 'No dreams recorded yet.',
+    created: 'Created',
     
     // Note Creation Modal
     recordYourDream: 'Record Your Dream',
@@ -106,6 +110,10 @@ const translations = {
     aiDreamAssistant: 'Asystent Snów AI',
     createNewDream: 'Utwórz Nowy Sen',
     settings: 'Ustawienia',
+    todaysDreams: 'Dzisiejsze sny',
+    allDreams: 'Wszystkie sny',
+    noDreamsAll: 'Brak zapisanych snów.',
+    created: 'Utworzono',
     
     // Note Creation Modal
     recordYourDream: 'Zapisz Swój Sen',

@@ -13,7 +13,6 @@ import {
   Loader2
 } from 'lucide-react'
 import { useWeeklyReport, useMonthlyReport } from '@/hooks/use-analytics'
-import { useTheme } from '@/contexts/theme-context'
 
 interface ReportsModalProps {
   isOpen: boolean
@@ -24,7 +23,6 @@ export function ReportsModal({ isOpen, onClose }: ReportsModalProps) {
   const [reportType, setReportType] = useState<'weekly' | 'monthly'>('weekly')
   const [selectedWeek, setSelectedWeek] = useState(0) // 0 = current week
   const [selectedMonth, setSelectedMonth] = useState(0) // 0 = current month
-  const { theme } = useTheme()
   
   const { data: weeklyData, loading: weeklyLoading } = useWeeklyReport(selectedWeek)
   const { data: monthlyData, loading: monthlyLoading } = useMonthlyReport(selectedMonth)
@@ -77,7 +75,7 @@ export function ReportsModal({ isOpen, onClose }: ReportsModalProps) {
       ? weekOptions[selectedWeek]?.label 
       : monthOptions[selectedMonth]?.label
     
-    let report = `# SNYO ${period} Report\n`
+    let report = `# Dream Journal ${period} Report\n`
     report += `## ${periodLabel}\n\n`
     
     if (reportType === 'weekly' && weeklyData) {
@@ -260,47 +258,47 @@ export function ReportsModal({ isOpen, onClose }: ReportsModalProps) {
             <div className="space-y-6">
               {/* Summary Stats */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900/30 dark:to-blue-800/30 p-4 rounded-xl">
+                <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-xl">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-blue-600 dark:text-blue-400 text-sm font-medium">Total Dreams</p>
-                      <p className="text-2xl font-bold text-blue-900 dark:text-blue-100">{currentData.totalDreams}</p>
+                      <p className="text-blue-600 text-sm font-medium">Total Dreams</p>
+                      <p className="text-2xl font-bold text-blue-900">{currentData.totalDreams}</p>
                     </div>
-                    <FileText className="w-8 h-8 text-blue-500 dark:text-blue-400" />
+                    <FileText className="w-8 h-8 text-blue-500" />
                   </div>
                 </div>
                 
-                <div className="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/30 dark:to-green-800/30 p-4 rounded-xl">
+                <div className="bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-xl">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-green-600 dark:text-green-400 text-sm font-medium">
+                      <p className="text-green-600 text-sm font-medium">
                         {reportType === 'weekly' ? 'This Week' : 'This Month'}
                       </p>
-                      <p className="text-2xl font-bold text-green-900 dark:text-green-100">
+                      <p className="text-2xl font-bold text-green-900">
                         {'dreamsThisWeek' in currentData ? currentData.dreamsThisWeek : currentData.dreamsThisMonth}
                       </p>
                     </div>
-                    <TrendingUp className="w-8 h-8 text-green-500 dark:text-green-400" />
+                    <TrendingUp className="w-8 h-8 text-green-500" />
                   </div>
                 </div>
                 
-                <div className="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/30 dark:to-purple-800/30 p-4 rounded-xl">
+                <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-4 rounded-xl">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-purple-600 dark:text-purple-400 text-sm font-medium">
+                      <p className="text-purple-600 text-sm font-medium">
                         Avg per {reportType === 'weekly' ? 'Day' : 'Week'}
                       </p>
-                      <p className="text-2xl font-bold text-purple-900 dark:text-purple-100">
+                      <p className="text-2xl font-bold text-purple-900">
                         {'avgPerDay' in currentData ? currentData.avgPerDay : currentData.avgPerWeek}
                       </p>
                     </div>
-                    <Calendar className="w-8 h-8 text-purple-500 dark:text-purple-400" />
+                    <Calendar className="w-8 h-8 text-purple-500" />
                   </div>
                 </div>
               </div>
 
               {/* Period Info */}
-              <div className="bg-white dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl p-4">
+              <div className="bg-gray-50 rounded-xl p-4">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Report Period</h3>
                 <p className="text-gray-600 dark:text-gray-300">
                   {formatDate(currentData.startDate)} - {formatDate(currentData.endDate)}
@@ -309,15 +307,15 @@ export function ReportsModal({ isOpen, onClose }: ReportsModalProps) {
 
               {/* Insights */}
               {currentData.insights && currentData.insights.length > 0 && (
-                <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 dark:from-yellow-900/30 dark:to-yellow-800/30 rounded-xl p-6">
+                <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-xl p-6">
                   <div className="flex items-center space-x-2 mb-4">
-                    <Sparkles className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />
-                    <h3 className="text-lg font-semibold text-yellow-900 dark:text-yellow-100">Key Insights</h3>
+                    <Sparkles className="w-5 h-5 text-yellow-600" />
+                    <h3 className="text-lg font-semibold text-yellow-900">Key Insights</h3>
                   </div>
                   <ul className="space-y-2">
                     {currentData.insights.map((insight, index) => (
-                      <li key={index} className="flex items-start space-x-2 text-yellow-800 dark:text-yellow-200">
-                        <span className="w-1.5 h-1.5 bg-yellow-600 dark:bg-yellow-400 rounded-full mt-2 flex-shrink-0" />
+                      <li key={index} className="flex items-start space-x-2 text-yellow-800">
+                        <span className="w-1.5 h-1.5 bg-yellow-600 rounded-full mt-2 flex-shrink-0" />
                         <span>{insight}</span>
                       </li>
                     ))}
@@ -327,14 +325,14 @@ export function ReportsModal({ isOpen, onClose }: ReportsModalProps) {
 
               {/* Mood Distribution */}
               {currentData.moodDistribution && currentData.moodDistribution.length > 0 && (
-                <div className="bg-white dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl p-6">
+                <div className="bg-white border border-gray-200 rounded-xl p-6">
                   <div className="flex items-center space-x-2 mb-4">
-                    <Heart className="w-5 h-5 text-pink-600 dark:text-pink-400" />
+                    <Heart className="w-5 h-5 text-pink-600" />
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Mood Distribution</h3>
                   </div>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                     {currentData.moodDistribution.map(mood => (
-                      <div key={mood.mood} className="flex items-center space-x-3 p-3 bg-white dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-lg">
+                      <div key={mood.mood} className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
                         <span className="text-xl">{getMoodEmoji(mood.mood)}</span>
                         <div>
                           <p className="font-medium text-gray-900 dark:text-white capitalize">{mood.mood}</p>
@@ -348,16 +346,16 @@ export function ReportsModal({ isOpen, onClose }: ReportsModalProps) {
 
               {/* Top Symbols */}
               {currentData.topSymbols && currentData.topSymbols.length > 0 && (
-                <div className="bg-white dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl p-6">
+                <div className="bg-white border border-gray-200 rounded-xl p-6">
                   <div className="flex items-center space-x-2 mb-4">
-                    <Brain className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                    <Brain className="w-5 h-5 text-indigo-600" />
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Common Symbols</h3>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     {currentData.topSymbols.map((symbol, index) => (
-                      <div key={symbol.symbol} className="flex items-center space-x-3 p-3 bg-white dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-lg">
-                        <div className="w-8 h-8 bg-indigo-100 dark:bg-indigo-900/50 rounded-full flex items-center justify-center">
-                          <span className="text-sm font-bold text-indigo-600 dark:text-indigo-400">#{index + 1}</span>
+                      <div key={symbol.symbol} className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+                        <div className="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center">
+                          <span className="text-sm font-bold text-indigo-600">#{index + 1}</span>
                         </div>
                         <div>
                           <p className="font-medium text-gray-900 dark:text-white capitalize">{symbol.symbol}</p>
