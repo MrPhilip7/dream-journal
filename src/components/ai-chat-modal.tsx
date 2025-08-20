@@ -208,7 +208,7 @@ export function AiChatModal({ isOpen, onClose, note, onNoteUpdate }: AiChatModal
 
         {/* Quick Enhancement Buttons */}
         {note && (
-          <div className={`p-4 border-b ${theme === 'dark' ? 'border-gray-700 bg-gray-900/50' : 'border-gray-200 bg-gray-50'}`}>
+          <div className={`p-4 border-b ${theme === 'dark' ? 'border-gray-700 bg-gray-900/50' : 'border-gray-200 bg-white'}`}>
             <p className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} mb-3`}>{t('quickEnhancements')}:</p>
             <div className="flex flex-wrap gap-2">
               {[
@@ -268,7 +268,7 @@ export function AiChatModal({ isOpen, onClose, note, onNoteUpdate }: AiChatModal
         </div>
 
         {/* Input */}
-        <div className={`p-6 border-t ${theme === 'dark' ? 'border-gray-700 bg-gray-900/50' : 'border-gray-200 bg-gray-50'}`}>
+        <div className={`p-6 border-t ${theme === 'dark' ? 'border-gray-700 bg-gray-900/50' : 'border-gray-200 bg-white'}`}>
           <div className="flex space-x-3">
             <input
               ref={inputRef}

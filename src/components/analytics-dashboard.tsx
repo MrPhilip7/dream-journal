@@ -14,6 +14,7 @@ import {
   Zap
 } from 'lucide-react'
 import { useOverviewAnalytics, useMoodAnalytics, useSymbolAnalytics, useTrendAnalytics } from '@/hooks/use-analytics'
+import { useTheme } from '@/contexts/theme-context'
 
 interface AnalyticsDashboardProps {
   isOpen: boolean
@@ -23,6 +24,7 @@ interface AnalyticsDashboardProps {
 export function AnalyticsDashboard({ isOpen, onClose }: AnalyticsDashboardProps) {
   const [selectedPeriod, setSelectedPeriod] = useState(30)
   const [activeTab, setActiveTab] = useState('overview')
+  const { theme } = useTheme()
   
   const { data: overviewData, loading: overviewLoading } = useOverviewAnalytics(selectedPeriod)
   const { data: moodData, loading: moodLoading } = useMoodAnalytics(selectedPeriod)
@@ -145,50 +147,50 @@ export function AnalyticsDashboard({ isOpen, onClose }: AnalyticsDashboardProps)
                 <>
                   {/* Stats Cards */}
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-xl">
+                    <div className="bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900/30 dark:to-blue-800/30 p-4 rounded-xl">
                       <div className="flex items-center justify-between">
                         <div>
-                          <p className="text-blue-600 text-sm font-medium">Total Dreams</p>
-                          <p className="text-2xl font-bold text-blue-900">{overviewData.totalDreams}</p>
+                          <p className="text-blue-600 dark:text-blue-400 text-sm font-medium">Total Dreams</p>
+                          <p className="text-2xl font-bold text-blue-900 dark:text-blue-100">{overviewData.totalDreams}</p>
                         </div>
-                        <Moon className="w-8 h-8 text-blue-500" />
+                        <Moon className="w-8 h-8 text-blue-500 dark:text-blue-400" />
                       </div>
                     </div>
                     
-                    <div className="bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-xl">
+                    <div className="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/30 dark:to-green-800/30 p-4 rounded-xl">
                       <div className="flex items-center justify-between">
                         <div>
-                          <p className="text-green-600 text-sm font-medium">Dream Streak</p>
-                          <p className="text-2xl font-bold text-green-900">{overviewData.dreamStreak} days</p>
+                          <p className="text-green-600 dark:text-green-400 text-sm font-medium">Dream Streak</p>
+                          <p className="text-2xl font-bold text-green-900 dark:text-green-100">{overviewData.dreamStreak} days</p>
                         </div>
-                        <Target className="w-8 h-8 text-green-500" />
+                        <Target className="w-8 h-8 text-green-500 dark:text-green-400" />
                       </div>
                     </div>
                     
-                    <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-4 rounded-xl">
+                    <div className="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/30 dark:to-purple-800/30 p-4 rounded-xl">
                       <div className="flex items-center justify-between">
                         <div>
-                          <p className="text-purple-600 text-sm font-medium">Weekly Average</p>
-                          <p className="text-2xl font-bold text-purple-900">{overviewData.avgDreamsPerWeek}</p>
+                          <p className="text-purple-600 dark:text-purple-400 text-sm font-medium">Weekly Average</p>
+                          <p className="text-2xl font-bold text-purple-900 dark:text-purple-100">{overviewData.avgDreamsPerWeek}</p>
                         </div>
-                        <TrendingUp className="w-8 h-8 text-purple-500" />
+                        <TrendingUp className="w-8 h-8 text-purple-500 dark:text-purple-400" />
                       </div>
                     </div>
                     
-                    <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 p-4 rounded-xl">
+                    <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 dark:from-yellow-900/30 dark:to-yellow-800/30 p-4 rounded-xl">
                       <div className="flex items-center justify-between">
                         <div>
-                          <p className="text-yellow-600 text-sm font-medium">AI Enhanced</p>
-                          <p className="text-2xl font-bold text-yellow-900">{overviewData.aiEditedCount}</p>
+                          <p className="text-yellow-600 dark:text-yellow-400 text-sm font-medium">AI Enhanced</p>
+                          <p className="text-2xl font-bold text-yellow-900 dark:text-yellow-100">{overviewData.aiEditedCount}</p>
                         </div>
-                        <Sparkles className="w-8 h-8 text-yellow-500" />
+                        <Sparkles className="w-8 h-8 text-yellow-500 dark:text-yellow-400" />
                       </div>
                     </div>
                   </div>
 
                   {/* Mood Distribution */}
                   {overviewData.moodDistribution && overviewData.moodDistribution.length > 0 && (
-                    <div className="bg-gray-50 rounded-xl p-6">
+                    <div className="bg-white dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl p-6">
                       <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Mood Distribution</h3>
                       <div className="space-y-3">
                         {overviewData.moodDistribution.map(item => {
@@ -231,24 +233,24 @@ export function AnalyticsDashboard({ isOpen, onClose }: AnalyticsDashboardProps)
                 </div>
               ) : symbolData ? (
                 <>
-                  <div className="bg-gradient-to-br from-indigo-50 to-indigo-100 p-4 rounded-xl">
+                  <div className="bg-gradient-to-br from-indigo-50 to-indigo-100 dark:from-indigo-900/30 dark:to-indigo-800/30 p-4 rounded-xl">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-indigo-600 text-sm font-medium">Unique Symbols</p>
-                        <p className="text-2xl font-bold text-indigo-900">{symbolData.totalUniqueSymbols}</p>
+                        <p className="text-indigo-600 dark:text-indigo-400 text-sm font-medium">Unique Symbols</p>
+                        <p className="text-2xl font-bold text-indigo-900 dark:text-indigo-100">{symbolData.totalUniqueSymbols}</p>
                       </div>
-                      <Brain className="w-8 h-8 text-indigo-500" />
+                      <Brain className="w-8 h-8 text-indigo-500 dark:text-indigo-400" />
                     </div>
                   </div>
                   
                   {symbolData.topSymbols && symbolData.topSymbols.length > 0 && (
-                    <div className="bg-gray-50 rounded-xl p-6">
+                    <div className="bg-white dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl p-6">
                       <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Most Common Symbols</h3>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {symbolData.topSymbols.map((symbol, index) => (
                           <div key={symbol.symbol} className="flex items-center space-x-3 p-3 bg-white dark:bg-gray-700 rounded-lg">
-                            <div className="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center">
-                              <span className="text-sm font-bold text-indigo-600">#{index + 1}</span>
+                            <div className="w-8 h-8 bg-indigo-100 dark:bg-indigo-900/50 rounded-full flex items-center justify-center">
+                              <span className="text-sm font-bold text-indigo-600 dark:text-indigo-400">#{index + 1}</span>
                             </div>
                             <div className="flex-1">
                               <p className="font-medium text-gray-900 dark:text-white capitalize">{symbol.symbol}</p>
